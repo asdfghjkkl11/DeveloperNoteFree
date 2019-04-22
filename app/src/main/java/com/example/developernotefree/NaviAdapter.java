@@ -14,9 +14,9 @@ public class NaviAdapter extends BaseAdapter {
     private OnItemClick mCallback;
     private int count=0;
     public NaviAdapter(ArrayList<String> k,OnItemClick onItemClick){
-        Keys=k;
-        currunt=k;
-        getCurrunt=k;
+        Keys=(ArrayList<String>)k.clone();
+        currunt=(ArrayList<String>)k.clone();
+        getCurrunt=(ArrayList<String>)k.clone();
         mCallback=onItemClick;
         count=k.size();
     }
@@ -67,5 +67,14 @@ public class NaviAdapter extends BaseAdapter {
             }
         });
         return convertView;
+    }
+    public void clear(ArrayList<String> k){
+        Keys.clear();
+        currunt.clear();
+        getCurrunt.clear();
+        Keys=(ArrayList<String>)k.clone();
+        currunt=(ArrayList<String>)k.clone();
+        getCurrunt=(ArrayList<String>)k.clone();
+        count=k.size();
     }
 }

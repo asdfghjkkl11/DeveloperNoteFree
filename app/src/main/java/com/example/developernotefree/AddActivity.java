@@ -5,10 +5,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,18 +21,24 @@ import java.util.Date;
 public class AddActivity extends AppCompatActivity implements OnItemClick{
     private EditText editText1,editText2;
     private String ID,title,text;
-    private ArrayList<String> Menu;
+    private Spinner spinner;
+    private ArrayList<String> Menu,SMenu;
     private ListView listView;
     private LinearLayout linearLayout;
     private Navigator navigator;
+    private String[] JSONList={"type","element","CPP"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         Menu = new ArrayList<>();
-        Menu.add("type");
-        Menu.add("element");
-        Menu.add("CPP");
+        SMenu = new ArrayList<>();
+        for(int i=0;i<JSONList.length;i++){
+            if(i<2)
+                Menu.add(JSONList[i]);
+            else
+                SMenu.add(JSONList[i]);
+        }
         editText1 = findViewById(R.id.title_text);
         editText2 = findViewById(R.id.body_text);
         Button btn = findViewById(R.id.addFinish);
@@ -42,8 +53,27 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             editText2.setText(text);
         }
         listView = findViewById(R.id.listView);
-        NaviAdapter naviAdapter= new NaviAdapter(Menu,this);
+        final NaviAdapter naviAdapter= new NaviAdapter(Menu,this);
         listView.setAdapter(naviAdapter);
+        spinner=findViewById(R.id.spinner);
+        final ArrayAdapter<String> arrAdapt=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, SMenu);
+        spinner.setAdapter(arrAdapt);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Menu.clear();
+                Menu.add(JSONList[0]);
+                Menu.add(JSONList[1]);
+                Menu.add(spinner.getItemAtPosition(position).toString());
+                naviAdapter.clear(Menu);
+                navigator.clear(Menu);
+                naviAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
         linearLayout.setVisibility(View.INVISIBLE);
         FloatingActionButton navi= findViewById(R.id.navigator);
         navi.setOnClickListener(new View.OnClickListener() {

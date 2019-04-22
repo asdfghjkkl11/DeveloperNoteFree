@@ -25,7 +25,7 @@ public class Navigator {
         key=new Stack<>();
         value=new Stack<>();
         valuelist=new ArrayList<>();
-        keylist = str;
+        keylist = (ArrayList<String>)str.clone();
         Log.d(TAG, "Navigator: "+str);
         assetManager = context.getAssets();
         try {
@@ -80,5 +80,35 @@ public class Navigator {
         key.pop();
         value.pop();
         return key.peek();
+    }
+    public void clear(ArrayList<String> str){
+        key.clear();
+        value.clear();
+        keylist.clear();
+        valuelist.clear();
+        key=new Stack<>();
+        value=new Stack<>();
+        valuelist=new ArrayList<>();
+        keylist = (ArrayList<String>)str.clone();
+        Log.d(TAG, "Navigator: "+str);
+        try {
+            for (int i=0;i<str.size();i++) {
+                is = assetManager.open(str.get(i)+".json");
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                String json =new String(buffer, "UTF-8");
+                JSONObject J=new JSONObject(json);
+                valuelist.add(J.getString(str.get(i)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+        key.push(keylist);
+        value.push(valuelist);
     }
 }
