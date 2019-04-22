@@ -1,0 +1,16 @@
+{
+  "type":
+  {
+    "void": "void ",
+    "int": "int ",
+    "float": "float ",
+    "double": "double ",
+    "char": "char ",
+    "string": "string ",
+    "bool": "bool ",
+    "short": "short ",
+    "long ": "long ",
+    "long long": "long long ",
+    "long double": "long double "
+  }
+}

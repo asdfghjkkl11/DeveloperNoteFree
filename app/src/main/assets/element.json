@@ -1,0 +1,12 @@
+{
+  "element":
+  {
+    "if": "if",
+    "for": "for",
+    "while": "while",
+    "switch": "switch",
+    "()": "( )",
+    "{}": "{\n}",
+    ";": ";"
+  }
+}
