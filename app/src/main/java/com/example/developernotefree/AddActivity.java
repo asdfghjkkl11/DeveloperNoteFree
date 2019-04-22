@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+//AddActivity
 public class AddActivity extends AppCompatActivity implements OnItemClick{
     private EditText editText1,editText2;
     private String ID,title,text;

@@ -15,7 +15,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-
+//MainActivity
 public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
