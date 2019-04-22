@@ -1,18 +1,39 @@
 {
   "CPP":
   {
-    "algorithm":
-    {
-      "include": "#include<algorithm>\n",
-      "sort": "sort();",
-      "min": "min();",
-      "max": "max();"
+    "C Library": {
+
     },
-    "vector":
-    {
-      "include": "#include<vector>\n",
-      "push_back": "push_back();",
-      "pop_back": "pop_back();"
+    "Container": {
+      "stack":
+      {
+        "include": "#include<stack>\n",
+        "push_back": "push()",
+        "pop_back": "pop()"
+      },
+      "vector":
+      {
+        "include": "#include<vector>\n",
+        "push_back": "push_back()",
+        "pop_back": "pop_back()"
+      }
+    },
+    "Multi-threading": {
+
+    },
+    "Other": {
+      "algorithm":
+      {
+        "include": "#include<algorithm>\n",
+        "sort": "sort()",
+        "min": "min()",
+        "max": "max()"
+      },
+      "string": {
+        "include": "#include<string>\n",
+        "begin": "begin()",
+        "begin": "end()"
+      }
     }
   }
 }

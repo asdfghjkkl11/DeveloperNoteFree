@@ -98,5 +98,11 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         int e = Math.max(view.getSelectionEnd(), 0);
         // 역으로 선택된 경우 s가 e보다 클 수 있다 때문에 이렇게 Math.min Math.max를 쓴다.
         view.getText().replace(Math.min(s, e), Math.max(s, e), text, 0, text.length());
+        if(text.equals("( )")||text.equals("[]")||text.equals(";\n")) {
+            view.setSelection(s+1);
+        }
+        if(text.equals("{\n\n}")) {
+            view.setSelection(s+2);
+        }
     }
 }
