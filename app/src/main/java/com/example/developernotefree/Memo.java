@@ -4,7 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import io.realm.RealmObject;
 import io.realm.annotations.Required;
-
+/*
+ * memo class. to save realm.
+ * memo class format by ID, title, text
+ * ID is identify memo by "yyyy-MM-dd HH:mm:ss"
+ * made by asdfghjkkl11
+ */
 public class Memo extends RealmObject{
 
     @Override
@@ -24,8 +29,8 @@ public class Memo extends RealmObject{
         Date dt = new Date();
         SimpleDateFormat full_sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         this.ID=full_sdf.format(dt);
-        this.title = "무제";
-        this.text = "아무값도 없습니다.";
+        this.title = "no title";
+        this.text = "no data";
     }
     public Memo(String title,String text) {
         Date dt = new Date();

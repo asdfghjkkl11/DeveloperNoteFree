@@ -10,7 +10,11 @@ import android.widget.TextView;
 import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
-
+/*
+ * rcvadapter. adpater of recyclerview.
+ * show memo lists.
+ * handle data in realm
+ */
 public class RcvAdapter extends RecyclerView.Adapter<RcvAdapter.ViewHolder> {
 
     private Activity activity;

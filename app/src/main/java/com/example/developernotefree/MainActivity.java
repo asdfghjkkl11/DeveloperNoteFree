@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
-
+/*
+* main activity. first screen when application on.
+* get memo data from realm and show memo using recycler view.
+* made by asdfghjkkl11
+ */
 public class MainActivity extends AppCompatActivity {
 
     private Realm realm;
@@ -32,17 +36,19 @@ public class MainActivity extends AppCompatActivity {
         rcv.addItemDecoration(new DividerItemDecoration(this, linearLayoutManager.getOrientation()));
         rcv.setLayoutManager(linearLayoutManager);
 
+        //get data from realm
         Realm.init(this);
         realm = Realm.getDefaultInstance();
-
         RealmResults<Memo> realmResults = realm.where(Memo.class).findAllAsync();
 
+        //show list of memo using recycler view
         for(Memo memo : realmResults) {
             list.add(new Memo(memo));
             rcvAdapter = new RcvAdapter(MainActivity.this,list);
             rcv.setAdapter(rcvAdapter);
         }
 
+        //write new memo click floating action button
         FloatingActionButton button = findViewById(R.id.floating);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    //if get result from addactivity, update realm data.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);

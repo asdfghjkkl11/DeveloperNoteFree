@@ -32,7 +32,7 @@
       "string": {
         "include": "#include<string>\n",
         "begin": "begin()",
-        "begin": "end()"
+        "end": "end()"
       }
     }
   }

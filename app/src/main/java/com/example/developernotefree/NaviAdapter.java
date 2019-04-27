@@ -7,7 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import java.util.ArrayList;
-
+/*
+ * naviadpater. adapter of navigator.
+ * Key - first value list
+ * currunt - Guaranteed value they are keys
+ * getCurrunt - get values from key, if it is leaf of json, print it.
+ * mCallback - it can use callback function from addactivity.
+ * made by asdfghjkkl11
+ */
 public class NaviAdapter extends BaseAdapter {
     private LayoutInflater inflater = null;
     private ArrayList<String> Keys,currunt,getCurrunt;
@@ -35,6 +42,7 @@ public class NaviAdapter extends BaseAdapter {
         return 0;
     }
 
+    //button list from json
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         if (convertView == null)
@@ -68,6 +76,7 @@ public class NaviAdapter extends BaseAdapter {
         });
         return convertView;
     }
+    //reset when language changed
     public void clear(ArrayList<String> k){
         Keys.clear();
         currunt.clear();

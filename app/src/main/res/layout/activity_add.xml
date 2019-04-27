@@ -12,22 +12,44 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:hint="제목"/>
+        android:hint="title"/>
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_alignEnd="@id/title_text"
         />
-    <EditText
-        android:id="@+id/body_text"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_text"
         android:layout_above="@+id/addFinish"
-        android:background="@null"
-        android:hint="본문"
-        android:gravity="top" />
+        android:fillViewport="true" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/line_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top"
+                />
+            <View
+                android:layout_height="match_parent"
+                android:layout_width="2dp"
+                android:background="#FF8800"/>
+            <EditText
+                android:id="@+id/body_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="main"
+                android:gravity="top" />
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/addFinish"

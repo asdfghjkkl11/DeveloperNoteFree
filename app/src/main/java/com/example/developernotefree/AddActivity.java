@@ -1,24 +1,39 @@
 package com.example.developernotefree;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
-
+import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+/*
+ * add activity. you can write new memo from hear.
+ * prepare json list in JSONList.
+ * user can select language using spinner.
+ * if select language, navigator get data newly from json file in asset folder
+ * button list can show or hide click main floating action button.
+ * made by asdfghjkkl11
+ */
+
 public class AddActivity extends AppCompatActivity implements OnItemClick{
+    private TextView textView;
     private EditText editText1,editText2;
     private String ID,title,text;
     private Spinner spinner;
@@ -27,24 +42,54 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
     private LinearLayout linearLayout;
     private Navigator navigator;
     private String[] JSONList={"type","element","CPP"};
+    private int fontDP=20;
+    private int leftDP=20;
+    private int W,H;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
         Menu = new ArrayList<>();
         SMenu = new ArrayList<>();
+        Point p=new Point();
+        getWindowManager().getDefaultDisplay().getSize(p);
+        W=p.x;
+        H=p.y;
+        //make default json file list
         for(int i=0;i<JSONList.length;i++){
             if(i<2)
                 Menu.add(JSONList[i]);
             else
                 SMenu.add(JSONList[i]);
         }
+        textView=findViewById(R.id.line_text);
         editText1 = findViewById(R.id.title_text);
         editText2 = findViewById(R.id.body_text);
+        //make equal between textView and editText
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,fontDP);
+        editText2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,fontDP);
+        editText2.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            //check code lines every change.
+            @Override
+            public void afterTextChanged(Editable s) {
+                drawLine(editText2.getText().toString());
+            }
+        });
         Button btn = findViewById(R.id.addFinish);
         Intent intent=getIntent();
         linearLayout = findViewById(R.id.linear);
         navigator=new Navigator(this,Menu);
+
+        //if enter from already exist data, load data from intent
         if(intent!=null){
             ID=intent.getStringExtra("ID");
             title=intent.getStringExtra("title");
@@ -58,6 +103,8 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         spinner=findViewById(R.id.spinner);
         final ArrayAdapter<String> arrAdapt=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, SMenu);
         spinner.setAdapter(arrAdapt);
+
+        //select program language
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -74,6 +121,8 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        //control visible
         linearLayout.setVisibility(View.INVISIBLE);
         FloatingActionButton navi= findViewById(R.id.navigator);
         navi.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +135,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             }
         });
 
+        //save data button
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +156,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         });
     }
 
+    //callback functions called in navigator adapter
     @Override
     public void onClick(String value) {
         insertText(editText2,value);
@@ -121,18 +172,49 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         return navigator.pop();
     }
 
+    //edit code using button
     public void insertText(EditText view, String text)
     {
-        // Math.max 는 에초에 커서가 잡혀있지않을때를 대비해서 넣음.
         int s = Math.max(view.getSelectionStart(), 0);
         int e = Math.max(view.getSelectionEnd(), 0);
-        // 역으로 선택된 경우 s가 e보다 클 수 있다 때문에 이렇게 Math.min Math.max를 쓴다.
         view.getText().replace(Math.min(s, e), Math.max(s, e), text, 0, text.length());
         if(text.equals("( )")||text.equals("[]")||text.equals(";\n")) {
             view.setSelection(s+1);
         }
         if(text.equals("{\n\n}")) {
             view.setSelection(s+2);
+        }
+    }
+    //check how many lines in code.
+    public void drawLine(String str){
+        String nstr = "1\n";
+        int count = 2;
+        String[] lines = str.split("\n");
+        leftDP=(int)(Math.log10(lines.length+1)+1)*fontDP*2;
+        for (int i = 0; i < lines.length; i++) {
+            int len=lines[i].length()*fontDP*2;
+            while(len+leftDP>W){
+                nstr+='\n';
+                len-=W-leftDP;
+            }
+            nstr += String.valueOf(count) + '\n';
+            count++;
+        }
+
+        textView.setWidth(leftDP);
+        textView.setText(nstr);
+    }
+    //redraw when screen orientation is changed
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.d("onConfigurationChanged" , "onConfigurationChanged");
+        int t=W;
+        W=H;
+        H=t;
+        try {
+            drawLine(editText2.getText().toString());
+        }catch (Exception e){
         }
     }
 }

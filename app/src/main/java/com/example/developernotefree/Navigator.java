@@ -12,7 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static android.content.ContentValues.TAG;
-
+/*
+ * navigator. control json files
+ * get file list from addactivity and read json files from asset folder.
+ * data saved by keys and values.
+ * save button click log using stack.
+ * made by asdfghjkkl11
+ */
 public class Navigator {
     private AssetManager assetManager;
     private InputStream is;
@@ -43,7 +49,6 @@ public class Navigator {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-
         }
         key.push(keylist);
         value.push(valuelist);
@@ -61,6 +66,7 @@ public class Navigator {
                 klist.add(s);
                 vlist.add(data.getString(s));
             }
+            //has no key == leaf value
             if(klist.size()==0)
                 throw new JSONException("kilst size()==0");
             key.push(klist);
@@ -81,6 +87,7 @@ public class Navigator {
         value.pop();
         return key.peek();
     }
+    //reset keys and values when language is changed.
     public void clear(ArrayList<String> str){
         key.clear();
         value.clear();
