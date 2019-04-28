@@ -4,22 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddActivity">
-
-
+    tools:context=".AddActivity"
+    android:background="@color/background"
+    >
     <EditText
         android:id="@+id/title_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        android:hint="title"/>
+        android:layout_marginLeft="20dp"
+        android:hint="title"
+        />
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_alignEnd="@id/title_text"
         />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,13 +35,12 @@
                 android:id="@+id/line_text"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@null"
                 android:gravity="top"
                 />
             <View
                 android:layout_height="match_parent"
                 android:layout_width="2dp"
-                android:background="#FF8800"/>
+                android:background="@color/lines"/>
             <EditText
                 android:id="@+id/body_text"
                 android:layout_width="match_parent"
@@ -56,7 +56,9 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:text="메모작성" />
+        android:text="save"
+        android:textColor="@color/keyword"
+        android:background="@drawable/custombutton"/>
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="70dp"

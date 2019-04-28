@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:text="Data" />
+        android:text="Data"
+        android:background="@drawable/custombutton"
+        android:textColor="@color/buttontext"/>
 
 </RelativeLayout>

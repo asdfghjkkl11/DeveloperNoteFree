@@ -2,17 +2,21 @@ package com.example.developernotefree;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.Spannable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,6 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
+import javax.annotation.Syntax;
 /*
  * add activity. you can write new memo from hear.
  * prepare json list in JSONList.
@@ -41,6 +47,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
     private ListView listView;
     private LinearLayout linearLayout;
     private Navigator navigator;
+    private SyntaxCode syntax;
     private String[] JSONList={"type","element","CPP"};
     private int fontDP=20;
     private int leftDP=20;
@@ -65,6 +72,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         textView=findViewById(R.id.line_text);
         editText1 = findViewById(R.id.title_text);
         editText2 = findViewById(R.id.body_text);
+        syntax=new SyntaxCode(this,editText2);
         //make equal between textView and editText
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,fontDP);
         editText2.setTextSize(TypedValue.COMPLEX_UNIT_DIP,fontDP);
@@ -81,7 +89,8 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             //check code lines every change.
             @Override
             public void afterTextChanged(Editable s) {
-                drawLine(editText2.getText().toString());
+                drawLine(s.toString());
+                syntax.paint(s);
             }
         });
         Button btn = findViewById(R.id.addFinish);
@@ -90,7 +99,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         navigator=new Navigator(this,Menu);
 
         //if enter from already exist data, load data from intent
-        if(intent!=null){
+        if(!intent.equals(null)){
             ID=intent.getStringExtra("ID");
             title=intent.getStringExtra("title");
             text=intent.getStringExtra("text");
@@ -101,9 +110,8 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         final NaviAdapter naviAdapter= new NaviAdapter(Menu,this);
         listView.setAdapter(naviAdapter);
         spinner=findViewById(R.id.spinner);
-        final ArrayAdapter<String> arrAdapt=new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, SMenu);
-        spinner.setAdapter(arrAdapt);
-
+        final SpinAdapter spinAdapter=new SpinAdapter(this, R.layout.support_simple_spinner_dropdown_item, SMenu);
+        spinner.setAdapter(spinAdapter);
         //select program language
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -154,6 +162,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
                 finish();
             }
         });
+        setTheme();
     }
 
     //callback functions called in navigator adapter
@@ -216,5 +225,16 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             drawLine(editText2.getText().toString());
         }catch (Exception e){
         }
+    }
+    //init theme
+    public void setTheme(){
+        textView.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
+        textView.setTextColor(ContextCompat.getColor(this,R.color.lines));
+        editText1.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
+        editText1.setTextColor(ContextCompat.getColor(this,R.color.keyword));
+        editText1.setHintTextColor(ContextCompat.getColor(this,R.color.code));
+        editText2.setBackgroundColor(ContextCompat.getColor(this,R.color.background));
+        editText2.setTextColor(ContextCompat.getColor(this,R.color.code));
+        editText2.setHintTextColor(ContextCompat.getColor(this,R.color.code));
     }
 }

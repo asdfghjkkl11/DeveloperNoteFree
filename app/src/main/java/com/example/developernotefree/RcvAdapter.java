@@ -11,7 +11,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 /*
- * rcvadapter. adpater of recyclerview.
+ * rcvadapter. adapter of recycler view.
  * show memo lists.
  * handle data in realm
  */
