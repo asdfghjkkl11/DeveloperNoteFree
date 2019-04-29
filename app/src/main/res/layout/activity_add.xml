@@ -21,35 +21,15 @@
         android:layout_height="50dp"
         android:layout_alignEnd="@id/title_text"
         />
-    <ScrollView
+    <com.asd.codeview.CodeView
+        android:id="@+id/codeview"
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/title_text"
-        android:layout_above="@+id/addFinish"
-        android:fillViewport="true" >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <TextView
-                android:id="@+id/line_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="top"
-                />
-            <View
-                android:layout_height="match_parent"
-                android:layout_width="2dp"
-                android:background="@color/lines"/>
-            <EditText
-                android:id="@+id/body_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="main"
-                android:gravity="top" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_above="@+id/addFinish">
+
+    </com.asd.codeview.CodeView>
 
     <Button
         android:id="@+id/addFinish"
