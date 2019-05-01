@@ -45,9 +45,9 @@ public class Memo extends RealmObject{
         this.text = text;
     }
     public Memo(Memo memo) {
-        this.ID=memo.ID;
-        this.title = memo.title;
-        this.text = memo.text;
+        this.ID=memo.getID();
+        this.title = memo.getTitle();
+        this.text = memo.getText();
     }
     public String getID() {
         return ID;

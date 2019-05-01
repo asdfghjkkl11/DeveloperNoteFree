@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 rcvAdapter = new RcvAdapter(MainActivity.this, list);
                 rcv.setAdapter(rcvAdapter);
             }
+            rcvAdapter.notifyDataSetChanged();
         }
     }
 }
