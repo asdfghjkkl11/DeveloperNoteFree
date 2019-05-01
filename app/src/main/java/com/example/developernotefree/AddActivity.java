@@ -1,10 +1,14 @@
 package com.example.developernotefree;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.DragEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -37,10 +41,16 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
     private Navigator navigator;
     private CodeView codeView;
     private String[] JSONList={"type","element","CPP"};
+    private float x,y,H;
+    private int action;
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+        Point p=new Point();
+        getWindowManager().getDefaultDisplay().getSize(p);
+        H=p.y/2;
         Menu = new ArrayList<>();
         SMenu = new ArrayList<>();
         //make default json file list
@@ -82,6 +92,8 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
                 naviAdapter.clear(Menu);
                 navigator.clear(Menu);
                 naviAdapter.notifyDataSetChanged();
+                linearLayout.setY(y);
+                linearLayout.setX(x);
             }
 
             @Override
@@ -92,16 +104,44 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         //control visible
         linearLayout.setVisibility(View.INVISIBLE);
         FloatingActionButton navi= findViewById(R.id.navigator);
-        navi.setOnClickListener(new View.OnClickListener() {
+        navi.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                if(linearLayout.getVisibility()==View.VISIBLE)
-                    linearLayout.setVisibility(View.INVISIBLE);
-                else
-                    linearLayout.setVisibility(View.VISIBLE);
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        x = view.getX() - event.getRawX();
+                        y = view.getY() - event.getRawY();
+                        action = MotionEvent.ACTION_DOWN;
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        view.setY(event.getRawY() + y);
+                        view.setX(event.getRawX() + x);
+                        if(event.getRawY() + y>H)
+                            linearLayout.setY(event.getRawY() + y-linearLayout.getHeight());
+                        else
+                            linearLayout.setY(event.getRawY() + y);
+                        linearLayout.setX(event.getRawX() + x-20);
+                        action = MotionEvent.ACTION_MOVE;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (action == MotionEvent.ACTION_DOWN){
+                            if(linearLayout.getVisibility()==View.VISIBLE)
+                                linearLayout.setVisibility(View.INVISIBLE);
+                            else
+                                linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        if(event.getRawY() + y>H)
+                            linearLayout.setY(event.getRawY() + y-linearLayout.getHeight());
+                        else
+                            linearLayout.setY(event.getRawY() + y);
+                        linearLayout.setX(event.getRawX() + x-20);
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
             }
         });
-
         //save data button
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +163,6 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         });
         setTheme();
     }
-
     //callback functions called in navigator adapter
     @Override
     public void onClick(String value) {

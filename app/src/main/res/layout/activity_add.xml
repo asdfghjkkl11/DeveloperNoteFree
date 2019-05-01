@@ -42,21 +42,23 @@
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/navigator"
+        android:layout_height="300dp"
         android:layout_alignParentEnd="true"
-        android:orientation="vertical">
+        android:layout_above="@+id/navigator"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        >
         <ScrollView
             android:layout_width="70dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_marginBottom="5dp">
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content">
         </ScrollView>
         <ListView
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:paddingTop="55dp"
             >
         </ListView>
     </LinearLayout>
@@ -67,5 +69,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="160dp"
-        app:backgroundTint="@color/colorAccent"/>
+        app:backgroundTint="@color/colorAccent"
+        >
+    </android.support.design.widget.FloatingActionButton>
 </RelativeLayout>
