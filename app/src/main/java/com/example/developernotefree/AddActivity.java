@@ -2,11 +2,13 @@ package com.example.developernotefree;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,9 +42,11 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
     private LinearLayout linearLayout;
     private Navigator navigator;
     private CodeView codeView;
+    private FloatingActionButton navi;
     private String[] JSONList={"type","element","CPP"};
-    private float x,y,H;
+    private float x,y,H,W;
     private int action;
+    private Button btn;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         setContentView(R.layout.activity_add);
         Point p=new Point();
         getWindowManager().getDefaultDisplay().getSize(p);
+        W=p.x/2;
         H=p.y/2;
         Menu = new ArrayList<>();
         SMenu = new ArrayList<>();
@@ -62,7 +67,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         }
         editText = findViewById(R.id.title_text);
         codeView=findViewById(R.id.codeview);
-        final Button btn = findViewById(R.id.addFinish);
+        btn = findViewById(R.id.addFinish);
         Intent intent=getIntent();
         linearLayout = findViewById(R.id.linear);
         navigator=new Navigator(this,Menu);
@@ -100,13 +105,14 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
         //control visible
         linearLayout.setVisibility(View.INVISIBLE);
-        FloatingActionButton navi= findViewById(R.id.navigator);
+        navi= findViewById(R.id.navigator);
         navi.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
+                Log.d("Touch", "onTouch: "+H);
+                Log.d("Touch", "onTouch: "+event.getRawX()+" "+event.getRawY());
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
                         x = view.getX() - event.getRawX();
@@ -168,11 +174,24 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
                     btn.setVisibility(View.GONE);
                 else if(bottom>oldBottom)
                     btn.setVisibility(View.VISIBLE);
+                if(right-left!=oldRight-oldLeft)
+                    btn.setVisibility(View.VISIBLE);
             }
         });
         setTheme();
+
     }
-    //callback functions called in navigator adapter
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        float t=W; W=H; H=t;
+        navi.setX(H);
+        navi.setY(W);
+        linearLayout.setX(H-20);
+        linearLayout.setY(W-linearLayout.getHeight());
+    }
+     //callback functions called in navigator adapter
+
     @Override
     public void onClick(String value) {
         codeView.insertText(value);
