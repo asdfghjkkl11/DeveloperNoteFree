@@ -62,7 +62,7 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
         }
         editText = findViewById(R.id.title_text);
         codeView=findViewById(R.id.codeview);
-        Button btn = findViewById(R.id.addFinish);
+        final Button btn = findViewById(R.id.addFinish);
         Intent intent=getIntent();
         linearLayout = findViewById(R.id.linear);
         navigator=new Navigator(this,Menu);
@@ -159,6 +159,15 @@ public class AddActivity extends AppCompatActivity implements OnItemClick{
                 add.putExtra("text",text);
                 setResult(RESULT_OK,add);
                 finish();
+            }
+        });
+        codeView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if(bottom<oldBottom)
+                    btn.setVisibility(View.GONE);
+                else if(bottom>oldBottom)
+                    btn.setVisibility(View.VISIBLE);
             }
         });
         setTheme();
